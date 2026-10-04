@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0a0a0b">
+<meta name="description" content="VOIDKIN — premium Kenyan streetwear and custom clothing. Shop tees, hoodies, jackets, bottoms, shorts and accessories.">
+<meta name="author" content="Gilbert Njonjo — VOIDKIN Owner">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="VOIDKIN — Streetwear & Custom Clothing">
+<meta property="og:description" content="More than a name. It's a mindset. Shop VOIDKIN streetwear and custom pieces.">
+<meta name="twitter:card" content="summary_large_image">
+<title>VOIDKIN — Streetwear & Custom Clothing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<!-- VOIDKIN storefront • Owner/content manager: Gilbert Njonjo • Contact: 0702766712 • gilbertnjonjo@gmail.com -->
+
+<div class="topbar">FREE DELIVERY ON SELECTED NAIROBI ORDERS • VOIDKIN — MORE THAN A NAME. IT'S A MINDSET.</div>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#home">VOIDKIN<small>STREETWEAR / CUSTOM</small></a>
+    <nav class="navlinks" id="navLinks" aria-label="Primary navigation">
+      <a href="#shop">Shop</a><a href="#collections">Collections</a><a href="#delivery">Delivery</a><a href="#about">About</a>
+    </nav>
+    <div class="actions">
+      <button class="icon-btn mobile-menu" onclick="toggleMobileMenu()" title="Open menu" aria-label="Open navigation">☰</button>
+      <button class="icon-btn" onclick="toggleSearch()" title="Search" aria-label="Search">⌕</button>
+      <div class="action-wrap"><button class="icon-btn" onclick="openCart()" title="Cart" aria-label="Open cart">🛒</button><span class="badge" id="cartBadge">0</span></div>
+      <button class="icon-btn" id="notifBtn" onclick="openNotifications()" title="Notifications" aria-label="Notifications">🔔</button><button class="icon-btn" onclick="openThemes()" title="Themes" aria-label="Themes">◐</button>
+      <button class="icon-btn" onclick="openAccount()" title="Account" aria-label="Account">◉</button>
+    </div>
+  </div>
+</header>
+
+<main id="home">
+<section class="hero container">
+  <div class="hero-copy">
+    <div class="kicker">VOIDKIN / 001 — NEW DROP</div>
+    <h1>MORE THAN<br>A NAME.<br>IT'S A MINDSET.</h1>
+    <p>Premium everyday streetwear built around clean silhouettes, dark tones and a signature identity. Discover jackets, hoodies, tees, bottoms and custom pieces.</p>
+    <div class="ctas"><a class="btn" href="#shop">SHOP THE DROP</a><button class="btn dark" onclick="openCustom()">CUSTOM ORDER ↗</button></div>
+  </div>
+  <div class="hero-card">
+    <img src="assets/images/hero-bomber.webp" alt="Model wearing the VOIDKIN graphite bomber jacket" loading="eager" fetchpriority="high">
+    <div class="hero-overlay"><h2>VOIDKIN BOMBER JACKET</h2><span>Graphite / Unisex / Limited drop</span></div>
+  </div>
+</section>
+
+<section class="section container" id="collections">
+  <div class="section-head"><div><div class="kicker">THE COLLECTION</div><h2>Built for your frequency.</h2></div><p>Clean. Dark. Intentional.</p></div>
+  <div class="info-grid">
+    <div class="info-card" role="button" tabindex="0" style="cursor:pointer" onclick="goCat('T-Shirts')" onkeydown="if(event.key==='Enter')goCat('T-Shirts')"><strong>01 / T-SHIRTS</strong><span>Heavyweight everyday essentials.</span></div>
+    <div class="info-card" role="button" tabindex="0" style="cursor:pointer" onclick="goCat('Hoodies')" onkeydown="if(event.key==='Enter')goCat('Hoodies')"><strong>02 / HOODIES</strong><span>Relaxed fits with signature branding.</span></div>
+    <div class="info-card" role="button" tabindex="0" style="cursor:pointer" onclick="goCat('Bottoms')" onkeydown="if(event.key==='Enter')goCat('Bottoms')"><strong>03 / BOTTOMS</strong><span>Cargos, shorts and tapered silhouettes.</span></div>
+    <div class="info-card" role="button" tabindex="0" style="cursor:pointer" onclick="goCat('Jackets')" onkeydown="if(event.key==='Enter')goCat('Jackets')"><strong>04 / OUTERWEAR</strong><span>Technical jackets for the city.</span></div>
+  </div>
+</section>
+
+<section class="section container" id="shop">
+  <div class="section-head"><div><div class="kicker">SHOP VOIDKIN</div><h2>Latest pieces.</h2></div><p id="resultCount"></p></div>
+  <div class="filters" id="filters" role="group" aria-label="Filter products"></div>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<section class="section container" id="delivery">
+  <div class="section-head"><div><div class="kicker">DELIVERY / LIVE MAP</div><h2>Know the journey.</h2></div><p>Allow location access to show your position.</p></div>
+  <div class="map-wrap">
+    <div id="map"></div>
+    <div class="map-panel">
+      <h3>VOIDKIN delivery intelligence</h3>
+      <div class="location-box"><small>Store / dispatch point</small><strong id="storeLocation">Nairobi, Kenya</strong></div>
+      <button class="btn dark" style="width:100%;margin:5px 0 12px" onclick="locateCustomer()">📍 USE MY LOCATION</button>
+      <div class="location-box"><small>Your location</small><strong id="customerLocation">Location not shared</strong></div>
+      <div class="delivery-row"><span>Nairobi</span><strong>1–2 days</strong></div>
+      <div class="delivery-row"><span>Central Kenya</span><strong>2–3 days</strong></div>
+      <div class="delivery-row"><span>Other Kenya regions</span><strong>2–5 days</strong></div>
+      <div class="delivery-row"><span>Custom / made-to-order</span><strong>+2–5 days</strong></div>
+      <p style="color:#777d87;font-size:10px;margin-top:15px">Delivery windows are estimates and can change based on stock, customization, courier and destination.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section container" id="about">
+  <div class="story">
+    <div class="story-art"><img src="assets/images/about-editorial.webp" alt="VOIDKIN streetwear editorial" loading="lazy"></div>
+    <div class="story-copy"><div class="kicker">THE VOIDKIN STANDARD</div><h2>Quiet design.<br>Strong identity.</h2><p>VOIDKIN is built around the idea that clothing can communicate without shouting. Every piece is designed to work as an individual statement or part of a complete fit.</p><button class="btn dark" onclick="openCustom()">REQUEST A CUSTOM PIECE</button></div>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+<div class="container footer-grid">
+  <div><div class="logo">VOIDKIN</div><p>More than a name. It's a mindset.</p><p>© <span id="year"></span> VOIDKIN. All rights reserved.</p><p>Owner & content manager: Gilbert Njonjo.</p></div>
+  <div><h4>Shop</h4><a href="#shop">All products</a><a href="#shop">New drop</a><a href="#collections">Collections</a></div>
+  <div><h4>Help</h4><a href="#" onclick="openAccount();return false">Account</a><a href="#" onclick="openCustom();return false">Custom orders</a><a href="#delivery">Delivery</a></div>
+  <div><h4>Contact</h4><a href="tel:0702766712">Call 0702766712</a><a href="mailto:gilbertnjonjo@gmail.com">gilbertnjonjo@gmail.com</a><a href="#" onclick="openWhatsApp();return false">WhatsApp</a><a href="#" onclick="openNotifications();return false">Notifications</a><a href="#" onclick="openOwner();return false">Owner portal</a></div>
+</div>
+</footer>
+
+<div id="themeModal" class="modal hidden"><div class="modal-card"><button class="close" onclick="closeModal('themeModal')">×</button><div class="kicker">VOIDKIN VISUAL SYSTEM</div><h2>Choose your theme</h2><p style="color:var(--muted);font-size:12px">Switch the storefront mood instantly. Your choice is saved on this device.</p><div class="theme-grid">
+<button class="theme-card" data-theme="void" onclick="setTheme('void')"><div class="theme-swatch swatch-void"></div><strong>VOID / Signature</strong><small>Dark monochrome</small></button>
+<button class="theme-card" data-theme="arctic" onclick="setTheme('arctic')"><div class="theme-swatch swatch-arctic"></div><strong>ARCTIC / Studio</strong><small>Clean premium light</small></button>
+<button class="theme-card" data-theme="carbon" onclick="setTheme('carbon')"><div class="theme-swatch swatch-carbon"></div><strong>CARBON / Luxe</strong><small>Deep graphite</small></button>
+<button class="theme-card" data-theme="crimson" onclick="setTheme('crimson')"><div class="theme-swatch swatch-crimson"></div><strong>CRIMSON / Night</strong><small>Dark with red energy</small></button>
+<button class="theme-card" data-theme="electric" onclick="setTheme('electric')"><div class="theme-swatch swatch-electric"></div><strong>ELECTRIC / Future</strong><small>Tech cyan</small></button>
+<button class="theme-card" data-theme="sand" onclick="setTheme('sand')"><div class="theme-swatch swatch-sand"></div><strong>SAND / Atelier</strong><small>Warm luxury</small></button>
+</div><div class="notice" style="margin-top:15px">Recommended starting point: <b>VOID / Signature</b> for the core VOIDKIN identity. All six themes remain available to visitors.</div></div></div>
+<div id="toast" class="toast"></div>
+
+<!-- SEARCH -->
+<div class="modal hidden" id="searchModal"><div class="modal-card">
+<button class="close" onclick="closeModal('searchModal')">×</button><h2>Search VOIDKIN</h2>
+<div class="field"><input id="searchInput" placeholder="Search jackets, hoodies, tees..." oninput="searchProducts()"></div>
+<div id="searchResults"></div>
+</div></div>
+
+<!-- QUICK VIEW -->
+<div class="modal hidden" id="quickViewModal" role="dialog" aria-modal="true" aria-labelledby="quickViewTitle">
+  <div class="modal-card">
+    <button class="close" onclick="closeModal('quickViewModal')" aria-label="Close quick view">×</button>
+    <div id="quickViewBody"></div>
+  </div>
+</div>
+
+<!-- CART -->
+<div class="drawer hidden" id="cartDrawer"><div class="drawer-card">
+<button class="close" onclick="closeModal('cartDrawer')">×</button><h2>Your cart</h2><div id="cartItems"></div>
+<div class="total"><span>Total</span><span id="cartTotal">KES 0</span></div>
+<div class="quantity-note" style="margin:10px 0">Orders are confirmed manually on WhatsApp. Add your delivery details after WhatsApp opens.</div>
+<button class="btn" style="width:100%" onclick="checkout()">CHECKOUT / WHATSAPP</button>
+<button class="pill-btn" style="width:100%;margin-top:8px" onclick="closeModal('cartDrawer');document.getElementById('shop').scrollIntoView({behavior:'smooth'})">CONTINUE SHOPPING</button>
+</div></div>
+
+<!-- ACCOUNT -->
+<div class="modal hidden" id="accountModal"><div class="modal-card">
+<button class="close" onclick="closeModal('accountModal')">×</button><h2 id="accountTitle">Account</h2>
+<div id="accountBody"></div>
+</div></div>
+
+<!-- NOTIFICATIONS -->
+<div class="modal hidden" id="notificationModal"><div class="modal-card">
+<button class="close" onclick="closeModal('notificationModal')">×</button><h2>Notifications</h2>
+<div class="notice"><strong>NEW DROP</strong><br>The VOIDKIN Bomber Jacket and Puffer Jacket are now available.</div>
+<div class="notice"><strong>DELIVERY</strong><br>Choose your location on the delivery map for a more useful estimate.</div>
+<div class="notice"><strong>CUSTOM</strong><br>Custom pieces can be requested through the WhatsApp order flow.</div>
+</div></div>
+
+<!-- CUSTOM -->
+<div class="modal hidden" id="customModal"><div class="modal-card">
+<button class="close" onclick="closeModal('customModal')">×</button><h2>Custom VOIDKIN order</h2>
+<p style="color:#888;font-size:12px">Tell us what you want. We'll prepare the details for WhatsApp.</p>
+<div class="form-row"><div class="field"><label>Name</label><input id="customName"></div><div class="field"><label>Phone</label><input id="customPhone"></div></div>
+<div class="form-row"><div class="field"><label>Product</label><select id="customProduct"><option>Custom T-Shirt</option><option>Custom Hoodie</option><option>Custom Jacket</option><option>Custom Bottoms</option></select></div><div class="field"><label>Size</label><select id="customSize"><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></div></div>
+<div class="field"><label>Design / notes</label><textarea id="customNotes" rows="4" placeholder="Colour, logo, embroidery, fit, quantity..."></textarea></div>
+<button class="btn" style="width:100%" onclick="sendCustom()">SEND CUSTOM REQUEST</button>
+</div></div>
+
+<!-- OWNER -->
+<div class="modal hidden" id="ownerModal"><div class="modal-card" style="width:min(900px,94%)">
+<button class="close" onclick="closeModal('ownerModal')">×</button>
+<div id="ownerLogin">
+  <div class="kicker">RESTRICTED ACCESS</div><h2>VOIDKIN Owner Portal</h2><div class="notice"><b>Owner:</b> Gilbert Njonjo · gilbertnjonjo@gmail.com</div>
+  <div class="notice">This GitHub Pages version uses browser-side authentication. It is suitable for a front-end demo, but it is <b>not a secure production admin system</b>. Real owner authentication should be moved to a server/backend before handling sensitive business data.</div>
+  <div class="field"><label>Owner email</label><input id="ownerEmail" type="email" placeholder="gilbertnjonjo@gmail.com"></div>
+  <div class="field"><label>Owner password</label><input id="ownerPass" type="password" placeholder="Enter your owner password"></div>
+  <button class="btn" style="width:100%" onclick="ownerLogin()">ENTER OWNER PORTAL</button>
+  <p style="color:#777;font-size:10px;margin-top:12px">First time? Type your email and a new 12+ character password above, then tap Create. The password is salted and hashed, and stays on this browser only.</p>
+  <button class="pill-btn" style="width:100%;margin-top:8px" onclick="setupOwner()">CREATE / RESET LOCAL OWNER PASSWORD</button>
+</div>
+<div id="ownerDashboard" class="hidden"></div>
+</div></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
